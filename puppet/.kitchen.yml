@@ -1,0 +1,71 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 2048
+  synced_folders:
+    - ['../', '/opt/tarantool_cloud']
+    - ['test/shared/ca', '/var/tarantool_cloud/ca']
+
+platforms:
+  - name: ubuntu-16.04
+    driver:
+      box: bento/ubuntu-16.04
+      image: ubuntu-16-04-x64
+
+provisioner:
+  name: puppet_apply
+  manifests_path: manifests
+  modules_path: modules
+  hiera_config_path: test/shared/hiera.yaml
+  hiera_data_path: test/shared/hieradata
+  files_path: test/shared
+  fileserver_config_path: test/shared/fileserver.conf
+  require_chef_for_busser: false
+  require_puppet_collections: true
+  puppet_apt_collections_repo: http://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+  puppetfile_path: Puppetfile
+  puppet_debug: true
+  puppet_verbose: true
+  custom_options: "-e 'include tarantool_cloud'"
+
+suites:
+  - name: node1
+    driver:
+      vm_hostname: node1
+    provisioner:
+      custom_facts:
+        nodename: node1
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.20.12"}]
+
+  - name: node2
+    driver:
+      vm_hostname: node2
+    provisioner:
+      custom_facts:
+        nodename: node2
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.20.13"}]
+
+  - name: node3
+    driver:
+      vm_hostname: node3
+    provisioner:
+      custom_facts:
+        nodename: node3
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.20.14"}]
+
+  - name: node4
+    driver:
+      vm_hostname: node4
+    provisioner:
+      custom_facts:
+        nodename: node4
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.20.15"}]

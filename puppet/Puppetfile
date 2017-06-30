@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+forge 'https://forgeapi.puppetlabs.com'
+
+mod 'puppetlabs/stdlib'
+mod 'garethr/docker'
+mod 'KyleAnderson/consul'
+mod 'konstantin-fluentd', '0.8.0'
